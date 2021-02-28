@@ -1,0 +1,636 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a simple API",
+    "version": "1.0.0",
+    "title": "Ether API",
+    "contact": {
+      "email": "vicnas98.vn@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "virtserver.swaggerhub.com",
+  "basePath": "/vicnas/ether/1.0.0",
+  "tags": [
+    {
+      "name": "user",
+      "description": "Simple user accounts"
+    },
+    {
+      "name": "flight",
+      "description": "Operations about flights"
+    },
+    {
+      "name": "search",
+      "description": "Operations about search results"
+    },
+    {
+      "name": "supplier",
+      "description": "Operations about supplier"
+    },
+    {
+      "name": "travel",
+      "description": "Operations about travel results"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/user/login": {
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs user into the system",
+        "description": "A user must be able to login to his/her account by providing\nhis/her username and password\n",
+        "operationId": "loginUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username for login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "password",
+            "description": "The password for login",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "headers": {
+              "X-Rate-Limit": {
+                "type": "integer",
+                "format": "int32",
+                "description": "calls per hour allowed by the user"
+              },
+              "X-Expires-After": {
+                "type": "string",
+                "format": "date-time",
+                "description": "date in UTC when token expires"
+              }
+            },
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/user/{username}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get user's information",
+        "description": "A user must be able to see his information by providing his username\n",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "User to return",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/flight/search": {
+      "get": {
+        "tags": [
+          "flight"
+        ],
+        "summary": "Search flights",
+        "description": "A user must be able to search flights\n",
+        "operationId": "searchFlight",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "description": "date",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "startLocation",
+            "in": "query",
+            "description": "start location",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "endLocation",
+            "in": "query",
+            "description": "end location",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "numberOfTravellers",
+            "in": "query",
+            "description": "Number of travellers",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "cabinClass",
+            "in": "query",
+            "description": "Cabin class",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Search"
+            }
+          },
+          "404": {
+            "description": "Flight not found"
+          }
+        }
+      }
+    },
+    "/search/filter": {
+      "get": {
+        "tags": [
+          "search"
+        ],
+        "summary": "Filter results",
+        "description": "A user must be able to apply filters to the results\n",
+        "operationId": "filterResults",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "filterForDuration",
+            "in": "query",
+            "description": "Filters to apply",
+            "required": true,
+            "type": "boolean"
+          },
+          {
+            "name": "filterForPrice",
+            "in": "query",
+            "description": "Filters to apply",
+            "required": true,
+            "type": "boolean"
+          },
+          {
+            "name": "filterForAirline",
+            "in": "query",
+            "description": "Filters to apply",
+            "required": true,
+            "type": "boolean"
+          },
+          {
+            "name": "filterForStops",
+            "in": "query",
+            "description": "Filters to apply",
+            "required": true,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Search"
+            }
+          }
+        }
+      }
+    },
+    "/search/sort": {
+      "get": {
+        "tags": [
+          "search"
+        ],
+        "summary": "Sort results",
+        "description": "A user must be able to sort the results\n",
+        "operationId": "sortResults",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "bestFirst",
+            "in": "query",
+            "description": "Assortment by best flight first",
+            "required": true,
+            "type": "boolean"
+          },
+          {
+            "name": "cheapestFirst",
+            "in": "query",
+            "description": "Assortment by cheapest flight first",
+            "required": true,
+            "type": "boolean"
+          },
+          {
+            "name": "quickestFirst",
+            "in": "query",
+            "description": "Assortment by quickest flight first",
+            "required": true,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Search"
+            }
+          }
+        }
+      }
+    },
+    "/search": {
+      "get": {
+        "tags": [
+          "search"
+        ],
+        "summary": "Search Flights result",
+        "description": "A user must be able to see the flight search results\n",
+        "operationId": "getSearch",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/search/result/{resultID}": {
+      "get": {
+        "tags": [
+          "search"
+        ],
+        "summary": "Flight result",
+        "description": "A user must be able to choose a flight\n",
+        "operationId": "flightResult",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "resultID",
+            "in": "path",
+            "description": "Specific number of the result",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Result"
+            }
+          },
+          "404": {
+            "description": "Result not found"
+          }
+        }
+      }
+    },
+    "/travel/search": {
+      "get": {
+        "tags": [
+          "travel"
+        ],
+        "summary": "Search trip",
+        "description": "A user must be able to search trip within a budget\n",
+        "operationId": "travelResults",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "description": "date",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "minBudget",
+            "in": "query",
+            "description": "Min budget",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "maxBudget",
+            "in": "query",
+            "description": "Max budget",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Search"
+            }
+          },
+          "404": {
+            "description": "Travel not found"
+          }
+        }
+      }
+    },
+    "/supplier/{supplierID}/evaluate": {
+      "post": {
+        "tags": [
+          "supplier"
+        ],
+        "summary": "Evaluate supplier",
+        "description": "A loged in user must be able to evaluate suppliers\n",
+        "operationId": "evaluateSupplier",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "supplierID",
+            "in": "path",
+            "description": "Supplier to evaluate",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "evaluation",
+            "description": "Evaluation",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Supplier"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Supplier"
+            }
+          },
+          "400": {
+            "description": "Not a logged in user"
+          }
+        }
+      }
+    },
+    "/supplier/{supplierID}/connect": {
+      "get": {
+        "tags": [
+          "supplier"
+        ],
+        "summary": "Connect with a supplier",
+        "description": "A user must be able to connect with a supplier\n",
+        "operationId": "connectSupplier",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "supplierID",
+            "in": "path",
+            "description": "specific number of a supplier",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Search"
+            }
+          },
+          "503": {
+            "description": "Error the server is currently unavailable"
+          }
+        }
+      }
+    },
+    "/supplier/{supplierID}": {
+      "get": {
+        "tags": [
+          "supplier"
+        ],
+        "summary": "Evaluate a supplier",
+        "description": "A user must be able to see the evaluation of a supplier\n",
+        "operationId": "supplierEvaluation",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "supplierID",
+            "in": "path",
+            "description": "specific number of supplier",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Supplier"
+            }
+          },
+          "404": {
+            "description": "Evaluation not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "Supplier": {
+      "type": "object",
+      "properties": {
+        "supplierID": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "evaluation": {
+          "type": "number"
+        },
+        "url": {
+          "type": "string"
+        },
+        "evaluationExistence": {
+          "type": "boolean"
+        }
+      },
+      "xml": {
+        "name": "Supplier"
+      }
+    },
+    "Flight": {
+      "type": "object",
+      "properties": {
+        "flight": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "date": {
+          "type": "string"
+        },
+        "startLocation": {
+          "type": "string"
+        },
+        "endLocation": {
+          "type": "string"
+        },
+        "numberOfTravellers": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "cabinClass": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Flight"
+      }
+    },
+    "Result": {
+      "type": "object",
+      "properties": {
+        "resultID": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "Flight": {
+          "$ref": "#/definitions/Flight"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "duration": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "stops": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "airline": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Result"
+      }
+    },
+    "Search": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Result"
+      }
+    },
+    "Travel": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "minBudget": {
+          "type": "integer"
+        },
+        "maxBudget": {
+          "type": "integer"
+        }
+      },
+      "xml": {
+        "name": "Travel"
+      }
+    }
+  }
+}
