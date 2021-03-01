@@ -4,9 +4,9 @@
   <img src="./image/1.jpg">
 </p>
 
-Project for Software Engineering class. 
-<br>
-We designed a travel agency called ETHER.
+- Project for Software Engineering class. 
+- <br>
+- We designed a travel agency called ETHER.
 <p align="center"> Project for Software Engineering class. </p>
 <p align="center"> We designed a travel agency called ETHER. </p>
 
