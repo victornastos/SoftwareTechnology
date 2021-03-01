@@ -1,5 +1,6 @@
 # SoftwareTechnology
 
+<p align="center">
   <img src="./image/1.jpg">
 </p>
 
